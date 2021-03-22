@@ -1,0 +1,8 @@
+__pycache__/*
+vndirect/__pycache__/*
+dist
+vndirect.egg-info
+*.pyc
+.coverage
+.vscode/
+build/
