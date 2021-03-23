@@ -6,3 +6,4 @@ vndirect.egg-info
 .coverage
 .vscode/
 build/
+datasets/
