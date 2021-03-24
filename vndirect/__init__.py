@@ -28,6 +28,6 @@ from datetime import datetime, timezone
 __version__ = "0.2.0"
 __author__ = "Trung N. Tran"
 
-from .main import get_tickers_data, get_ticker_data, download
+from .main import get_tickers_data, get_ticker_data, download, add_cash
 
-__all__ = ['get_tickers_data', 'get_ticker_data', 'download']
+__all__ = ['get_tickers_data', 'get_ticker_data', 'download', 'add_cash']

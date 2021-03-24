@@ -149,3 +149,43 @@ def download(symbol, start, end):
     df.drop_duplicates(inplace=True)
     df.reset_index(inplace=True)
     return df
+
+def add_cash(df, interest_rate) -> pd.DataFrame:
+    """ 
+    Think of 'CASH' is stock with price increased every by the interest_rate
+    """
+
+    # Remove all columns except 'date' and 'day'
+    cash_df = df.filter(['date', 'day'])
+    cash_df.drop_duplicates(inplace=True)
+
+    price = 50
+    interest = price * interest_rate/365
+    dates = []
+    prices = []
+    volume = []
+    tickers = ["CASH" for x in range(cash_df.shape[0])]
+    days = []
+    for i in range(0, cash_df.shape[0]):
+        dates.append(cash_df.iloc[i]['date'])
+        prices.append(price)
+        volume.append(1)
+        days.append(cash_df.iloc[i]['day'])
+        # price = price + price * interest_rate/365
+        price += interest
+        
+    data = {
+      'date': dates,
+      'open': prices,
+      'high': prices,
+      'low': prices,
+      'close': prices,
+      'volume': volume,
+      'tic': tickers,
+      'day': days
+    }
+    cash_df = pd.DataFrame(data)
+
+    df = df.append(cash_df)
+    df = df.sort_values(by=['date', 'tic']).reset_index(drop=True)
+    return df
