@@ -25,9 +25,9 @@ import numpy as np
 import json
 from datetime import datetime, timezone
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 __author__ = "Trung N. Tran"
 
-from .main import get_tickers_data, get_ticker_data, download, add_cash
+from .main import get_tickers_data, get_ticker_data, download, add_cash, set_datasets_dir
 
-__all__ = ['get_tickers_data', 'get_ticker_data', 'download', 'add_cash']
+__all__ = ['get_tickers_data', 'get_ticker_data', 'download', 'add_cash', 'set_datasets_dir']

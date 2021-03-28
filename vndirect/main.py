@@ -27,13 +27,21 @@ import json
 import pandas as pd
 import numpy as np
 
+def set_datasets_dir(datasets_dir):
+    global DATASETS_DIR
+    DATASETS_DIR = datasets_dir
+
 def get_ticker_data(ticker, start_date, end_date):
+    global DATASETS_DIR
+    if "DATASETS_DIR" not in globals():
+        set_datasets_dir("datasets")
+
     start_date = pd.to_datetime(start_date)
     end_date = pd.to_datetime(end_date)
 
-    if not os.path.exists("datasets"):
-        os.makedirs("datasets") 
-    dataFile = "datasets/{}.csv".format(ticker)
+    if not os.path.exists(DATASETS_DIR):
+        os.makedirs(DATASETS_DIR) 
+    dataFile = DATASETS_DIR + "/{}.csv".format(ticker)
     end_date_epoch = _toEpoch(end_date)
     forceDownload = False
 
