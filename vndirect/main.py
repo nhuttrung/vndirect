@@ -59,8 +59,8 @@ def get_ticker_data(ticker, start_date, end_date):
     else:
         df = pd.read_csv(dataFile)
     
-    df.set_index('date', inplace=True)
-    df.index.name = "date"
+    df.set_index('Date', inplace=True)
+    df.index.name = 'Date'
     return df
 
 def get_tickers_data(ref_ticker, ticker_list, start_date, end_date) -> pd.DataFrame:
@@ -90,13 +90,13 @@ def get_tickers_data(ref_ticker, ticker_list, start_date, end_date) -> pd.DataFr
 
     # Reference dataframe which contains all trading dates
     ref_df = get_ticker_data(ref_ticker, start_date, end_date)
-    ref_df.drop(columns=['open', 'high', 'low', 'close', 'volume'], inplace=True)
+    ref_df.drop(columns=['Open', 'High', 'Low', 'Close', 'Volume'], inplace=True)
     # print("----- REF -------")
     # print(ref_df)
 
     for ticker in ticker_list:
         temp_df = get_ticker_data(ticker, start_date, end_date)
-        temp_df['tic'] = ticker
+        temp_df['Ticker'] = ticker
         # print("----- TEMP -------")
         # print(temp_df)
 
@@ -108,10 +108,10 @@ def get_tickers_data(ref_ticker, ticker_list, start_date, end_date) -> pd.DataFr
     # reset the index, we want to use numbers as index instead of dates
     data_df = data_df.reset_index()
     # create day of the week column (monday = 0)
-    data_df["date"] = pd.to_datetime(data_df["date"])
-    data_df["day"] = data_df["date"].dt.dayofweek
+    data_df['Date'] = pd.to_datetime(data_df['Date'])
+    data_df["day"] = data_df['Date'].dt.dayofweek
 
-    data_df = data_df.sort_values(by=['date', 'tic']).reset_index(drop=True)
+    data_df = data_df.sort_values(by=['Date', 'Ticker']).reset_index(drop=True)
 
     return data_df
 
@@ -143,17 +143,17 @@ def download(symbol, start, end):
         for idx, timestamp in enumerate(dates):
             dates[idx] = datetime.fromtimestamp(timestamp, timezone.utc).strftime("%Y-%m-%d")
         data = {
-            'date': dates,
-            'open': prices["o"],
-            'high': prices["h"],
-            'low': prices["l"],
-            'close': prices["c"],
-            'volume': prices["v"]
+            'Date': dates,
+            'Open': prices["o"],
+            'High': prices["h"],
+            'Low': prices["l"],
+            'Close': prices["c"],
+            'Volume': prices["v"]
         }
         df_temp = pd.DataFrame(data)
         df = df.append(df_temp, ignore_index=True)
 
-    df.set_index('date', inplace=True)
+    df.set_index('Date', inplace=True)
     df.drop_duplicates(inplace=True)
     df.reset_index(inplace=True)
     return df
@@ -163,8 +163,8 @@ def add_cash(df, interest_rate) -> pd.DataFrame:
     Think of 'CASH' is stock with price increased every by the interest_rate
     """
 
-    # Remove all columns except 'date' and 'day'
-    cash_df = df.filter(['date', 'day'])
+    # Remove all columns except 'Date' and 'day'
+    cash_df = df.filter(['Date', 'day'])
     cash_df.drop_duplicates(inplace=True)
 
     price = 50
@@ -175,7 +175,7 @@ def add_cash(df, interest_rate) -> pd.DataFrame:
     tickers = ["CASH" for x in range(cash_df.shape[0])]
     days = []
     for i in range(0, cash_df.shape[0]):
-        dates.append(cash_df.iloc[i]['date'])
+        dates.append(cash_df.iloc[i]['Date'])
         prices.append(price)
         volume.append(1)
         days.append(cash_df.iloc[i]['day'])
@@ -183,17 +183,17 @@ def add_cash(df, interest_rate) -> pd.DataFrame:
         price += interest
         
     data = {
-      'date': dates,
-      'open': prices,
-      'high': prices,
-      'low': prices,
-      'close': prices,
-      'volume': volume,
-      'tic': tickers,
+      'Date': dates,
+      'Open': prices,
+      'High': prices,
+      'Low': prices,
+      'Close': prices,
+      'Volume': volume,
+      'Ticker': tickers,
       'day': days
     }
     cash_df = pd.DataFrame(data)
 
     df = df.append(cash_df)
-    df = df.sort_values(by=['date', 'tic']).reset_index(drop=True)
+    df = df.sort_values(by=['Date', 'Ticker']).reset_index(drop=True)
     return df
