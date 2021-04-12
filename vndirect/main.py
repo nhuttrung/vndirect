@@ -124,7 +124,7 @@ def download(symbol, start, end):
     # print('Fetch prices for ' + symbol)
     start = pd.to_datetime(start)
     end = pd.to_datetime(end)
-    epochStart = _toEpoch(start)
+    epochStart = _toEpoch(start)+1
     epochEnd = _toEpoch(end)
 
     """ 
