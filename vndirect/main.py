@@ -59,7 +59,7 @@ def get_ticker_data(ticker, start_date, end_date):
     else:
         df = pd.read_csv(dataFile)
     
-    df['Date'] = pd.to_datetime(df.index)
+    df['Date'] = pd.to_datetime(df['Date'])
     df.set_index('Date', inplace=True)
     df.index.name = 'Date'
     return df

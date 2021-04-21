@@ -25,7 +25,7 @@ import numpy as np
 import json
 from datetime import datetime, timezone
 
-__version__ = "0.5.2"
+__version__ = "0.5.3"
 __author__ = "Trung N. Tran"
 
 from .main import get_tickers_data, get_ticker_data, download, add_cash, set_datasets_dir
