@@ -16,7 +16,7 @@ with io.open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='vndirect',
-    version="0.5.1",
+    version="0.5.2",
     description='VNDirect market data downloader',
     long_description=long_description,
     url='https://github.com/nhuttrung/vndirect',
